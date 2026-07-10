@@ -1,2 +1,2 @@
 # TaskFlow
-Gerenciador de tarefas moderno.
+Gerenciador de tarefas moderno (Emm desenvolvimento)
