@@ -1,7 +1,28 @@
+@import url("header.css");
+@import url("main.css");
+@import url("reset.css");
+@import url("sidebar.css");
+@import url("variables.css");
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+}
+
+:root {
+    --color-primary: #4ade80;
+    --color-background: #0f172a;
+    --color-surface: #1e293b;
+    --color-text: #f8fafc;
+    --color-text-secondary: #94a3b8;
+
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --spacing-xl: 32px;
+
+    --border-radius: 12px;
 }
 
 header {
@@ -14,4 +35,10 @@ header {
     display: flex;
     align-items: center;
     gap: 20px;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: var(--color-background);
+    color: var(--color-text);
 }
