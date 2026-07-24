@@ -1,0 +1,31 @@
+body {
+    font-family: "inter", sans-serif;
+    background-color: var(--color-background);
+    color: var(--color-text);
+}
+
+h1 {
+    font-size: 1,5rem;
+    font-weight: 700;
+}
+
+button {
+    border: none;
+    cursor: pointer;
+
+    background-color: var(--color-primary);
+    color: #ffffff;
+
+    padding: 12px 20px;
+
+    border-radius: var(--border-radius);
+
+    font-size: 1rem;
+    font-weight: 600;
+
+    transition: 0.2s;
+}
+
+button:hover {
+    opacity: 0.5;
+}
