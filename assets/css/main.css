@@ -29,3 +29,14 @@ button {
 button:hover {
     opacity: 0.5;
 }
+
+.layout {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+
+    min-height: calc(100vh - 81px);
+}
+
+.content {
+    display: grid;
+}
