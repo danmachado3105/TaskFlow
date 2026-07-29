@@ -39,4 +39,28 @@ button:hover {
 
 .content {
     display: grid;
+    padding: 32px;
+}
+
+.content h2 {
+    margin-bottom: 24px;
+}
+.task-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.task-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    background-color: var(--color-surface);
+
+    padding: 20px;
+
+    border-radius: var(--border-radius);
+
+    border: 1px solid #334155;
 }
