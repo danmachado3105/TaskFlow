@@ -140,11 +140,13 @@ button:hover {
 .secondary-button {
     background-color: transparent;
 
-    border: 1px solid #334155;
+    color: white;
 
-    padding: 12px 18px;
+    border: 1px solid #475569;
+
 }
 
 .secondary-button:hover {
-    background-color: rgb(177, 0, 0);
+    background-color: #7f1d1d;
+    border-color: #7f1d1d;
 }
