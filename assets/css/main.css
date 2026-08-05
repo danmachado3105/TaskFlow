@@ -52,86 +52,6 @@ button:hover {
 .content h2 {
     margin-bottom: 24px;
 }
-.task-list {
-    display: flex;
-
-    flex-direction: column;
-
-    gap: 16px;
-}
-
-.task-card {
-    display: flex;
-
-    justify-content: space-between;
-
-    align-items: center;
-
-    background-color: var(--color-surface);
-
-    padding: 20px;
-
-    border-radius: var(--border-radius);
-
-    border: 1px solid #334155;
-}
-
-.task-form {
-    background-color: var(--color-surface);
-
-    border: 1px solid #334155;
-
-    border-radius: var(--border-radius);
-
-    padding: 24px;
-
-    margin-bottom: 32px;
-}
-
-.task-form form {
-    display: flex;
-
-    flex-direction: column;
-
-    gap: 16px;
-}
-
-.task-form label {
-    font-weight: 600;
-}
-
-.task-form input,
-.task-form textarea {
-    padding: 12px;
-
-    border: 1px solid #334155;
-
-    border-radius: var(--border-radius);
-
-    background-color: var(--color-background);
-
-    color: var(--color-text);
-
-    font-family: inherit;
-
-    font-size:  1rem;
-
-    outline: none;
-}
-
-.task-form textarea {
-    resize: vertical;
-
-    min-height: 120px;
-}
-
-.form-actions {
-    display: flex;
-
-    justify-content: flex-end;
-
-    gap: 12px;
-}
 
 .primary-button {
     padding: 12px 24px;
@@ -149,4 +69,8 @@ button:hover {
 .secondary-button:hover {
     background-color: #7f1d1d;
     border-color: #7f1d1d;
+}
+
+.hidden {
+    display: none;
 }
