@@ -19,10 +19,14 @@ taskForm.addEventListener("submit", function (event) {
 
     const taskElement = document.createElement("div");
 
+    taskElement.classList.add("task-card");
+
     taskElement.innerHTML = `
         <h3> ${titleInput.value} </h3>
         <p> ${descriptionInput.value} </p>
     `;
+
+    taskList.appendChild(taskElement);
 
     console.log(taskElement);
 });
