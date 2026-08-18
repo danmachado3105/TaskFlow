@@ -5,6 +5,7 @@ const cancelButton = document.querySelector("#cancel-button");
 const titleInput = document.querySelector("#title");
 const descriptionInput = document.querySelector("#description");
 const taskList = document.querySelector(".task-list");
+const filterButtons = document.querySelectorAll(".sidebar-button");
 
 newTaskButton.addEventListener("click", function () {
     taskFormContainer.classList.remove("hidden");
@@ -46,4 +47,38 @@ taskList.addEventListener("click", function (event) {
     taskElement.classList.add("completed");
 
     console.log("Tarefa concluída!");
+});
+
+filterButtons.forEach(function (button) {
+    button.addEventListener("click", function () {
+
+        const filter = button.dataset.filter;
+
+        const tasks = taskList.querySelectorAll(".task-card");
+
+        tasks.forEach(function (task) {
+
+            if (filter === "all") {
+                task.style.display = "flex";
+            }
+
+            if (filter === "pending") {
+                if (task.classList.contains("completed")) {
+                    task.style.display = "none";
+                } else {
+                    task.style.display = "flex";
+                }
+            }
+
+            if (filter === "completed") {
+                if (task.classList.contains("completed")) {
+                    task.style.display = "flex";
+                } else {
+                    task.style.display = "none";
+                }
+            }
+
+        });
+
+    });
 });

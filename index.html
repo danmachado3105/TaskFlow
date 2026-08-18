@@ -33,31 +33,29 @@
 
     <main class="layout">
 
-        <aside class="sidebar">
-            <nav>
-                <ul>
-                    <li>
-                        <a href="#">Todas as tarefas</a>
-                    </li>
+        <nav class="sidebar">
 
-                    <li>
-                        <a href="#">Favoritas</a>
-                    </li>
+            <button class="sidebar-button active" data-filter="all">
+                Todas as tarefas
+            </button>
 
-                    <li>
-                        <a href="#">Pendentes</a>
-                    </li>
+            <button class="sidebar-button" data-filter="pending">
+                Pendentes
+            </button>
 
-                    <li>
-                        <a href="#">Concluídas</a>
-                    </li>
+            <button class="sidebar-button" data-filter="completed">
+                Concluídas
+            </button>
 
-                    <li>
-                        <a href="#">Configurações</a>
-                    </li>
-                </ul>
-            </nav>
-        </aside>
+            <button class="sidebar-button">
+                Favoritas
+            </button>
+
+            <button class="sidebar-button">
+                Configurações
+            </button>
+
+        </nav>
 
         <section class="content">
             <h2>Minhas tarefas</h2>
