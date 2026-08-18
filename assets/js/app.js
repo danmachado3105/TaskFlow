@@ -52,6 +52,12 @@ taskList.addEventListener("click", function (event) {
 filterButtons.forEach(function (button) {
     button.addEventListener("click", function () {
 
+        filterButtons.forEach(function (button) {
+            button.classList.remove("active");
+        });
+
+        button.classList.add("active");
+
         const filter = button.dataset.filter;
 
         const tasks = taskList.querySelectorAll(".task-card");
@@ -59,22 +65,22 @@ filterButtons.forEach(function (button) {
         tasks.forEach(function (task) {
 
             if (filter === "all") {
-                task.style.display = "flex";
+                task.classList.remove("hidden");
             }
 
             if (filter === "pending") {
                 if (task.classList.contains("completed")) {
-                    task.style.display = "none";
+                    task.classList.add("hidden");
                 } else {
-                    task.style.display = "flex";
+                    task.classList.remove("hidden");
                 }
             }
 
             if (filter === "completed") {
                 if (task.classList.contains("completed")) {
-                    task.style.display = "flex";
+                    task.classList.remove("hidden");
                 } else {
-                    task.style.display = "none";
+                    task.classList.add("hidden");
                 }
             }
 

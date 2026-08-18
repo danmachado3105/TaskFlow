@@ -103,3 +103,7 @@
 .task-card.completed .primary-button {
     opacity: 0.5;
 }
+
+.task-card.hidden {
+    display: none;
+}
