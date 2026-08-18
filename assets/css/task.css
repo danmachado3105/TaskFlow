@@ -81,6 +81,12 @@
 
 .task-card {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
+    padding: 24px;
+    border-radius: 12px;
+}
+
+.task-card.completed h3 {
+    text-decoration: line-through;
 }

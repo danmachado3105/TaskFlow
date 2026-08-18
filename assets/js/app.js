@@ -22,15 +22,28 @@ taskForm.addEventListener("submit", function (event) {
     taskElement.classList.add("task-card");
 
     taskElement.innerHTML = `
-    <div class="task-info">
-        <h3> ${titleInput.value} </h3>
-        <p> ${descriptionInput.value} </p>
-    </div>
-    
-    <button class="primary-button">Concluir</button>
+        <div class="task-info">
+            <h3>${titleInput.value}</h3>
+            <p>${descriptionInput.value}</p>
+        </div>
+
+        <button class="primary-button">Concluir</button>
     `;
 
     taskList.appendChild(taskElement);
+});
 
-    console.log(taskElement);
+
+taskList.addEventListener("click", function (event) {
+    const completeButton = event.target.closest(".primary-button");
+
+    if (!completeButton) {
+        return;
+    }
+
+    const taskElement = completeButton.closest(".task-card");
+
+    taskElement.classList.add("completed");
+
+    console.log("Tarefa concluída!");
 });
