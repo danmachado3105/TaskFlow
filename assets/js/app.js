@@ -22,8 +22,12 @@ taskForm.addEventListener("submit", function (event) {
     taskElement.classList.add("task-card");
 
     taskElement.innerHTML = `
+    <div class="task-info">
         <h3> ${titleInput.value} </h3>
         <p> ${descriptionInput.value} </p>
+    </div>
+    
+    <button class="primary-button">Concluir</button>
     `;
 
     taskList.appendChild(taskElement);
