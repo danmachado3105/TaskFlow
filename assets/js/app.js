@@ -66,6 +66,42 @@ taskList.addEventListener("click", function (event) {
     console.log("Tarefa concluída!");
 });
 
+function filterTasks(filter) {
+    const tasks = taskList.querySelectorAll(".task-card");
+
+    tasks.forEach(function (task) {
+
+        if (filter === "all") {
+            task.classList.remove("hidden");
+        }
+
+        if (filter === "pending") {
+            if (task.classList.contains("completed")) {
+                task.classList.add("hidden");
+            } else {
+                task.classList.remove("hidden");
+            }
+        }
+
+        if (filter === "completed") {
+            if (task.classList.contains("completed")) {
+                task.classList.remove("hidden");
+            } else {
+                task.classList.add("hidden");
+            }
+        }
+
+        if (filter === "favorite") {
+            if (task.classList.contains("favorite")) {
+                task.classList.remove("hidden");
+            } else {
+                task.classList.add("hidden");
+            }
+        }
+
+    });
+}
+
 filterButtons.forEach(function (button) {
     button.addEventListener("click", function () {
 
@@ -77,39 +113,6 @@ filterButtons.forEach(function (button) {
 
         const filter = button.dataset.filter;
 
-        const tasks = taskList.querySelectorAll(".task-card");
-
-        tasks.forEach(function (task) {
-
-            if (filter === "all") {
-                task.classList.remove("hidden");
-            }
-
-            if (filter === "pending") {
-                if (task.classList.contains("completed")) {
-                    task.classList.add("hidden");
-                } else {
-                    task.classList.remove("hidden");
-                }
-            }
-
-            if (filter === "completed") {
-                if (task.classList.contains("completed")) {
-                    task.classList.remove("hidden");
-                } else {
-                    task.classList.add("hidden");
-                }
-            }
-
-            if (filter === "favorite") {
-                if (task.classList.contains("favorite")) {
-                    task.classList.remove("hidden");
-                } else {
-                    task.classList.add("hidden");
-                }
-            }
-
-        });
-
+        filterTasks(filter);
     });
 });
