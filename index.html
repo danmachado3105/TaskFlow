@@ -24,7 +24,9 @@
                 <input id="search" type="text" placeholder="Pesquisar tarefas...">
             </form>
             
-            <button id="new-task-button">Nova Tarefa</button>
+            <button id="new-task-button" class="primary-button">
+                Nova tarefa
+            </button>
 
             <img src="#" alt="Avatar">
         </div>
@@ -33,36 +35,59 @@
 
     <main class="layout">
 
-        <nav class="sidebar">
+        <aside class="sidebar">
 
-            <button class="sidebar-button active" data-filter="all">
-                Todas as tarefas
-            </button>
+            <nav class="sidebar-navigation">
 
-            <button class="sidebar-button" data-filter="pending">
-                Pendentes
-            </button>
+                <button class="sidebar-button active" data-filter="all">
+                    <span>▣</span>
+                    Todas as tarefas
+                </button>
 
-            <button class="sidebar-button" data-filter="completed">
-                Concluídas
-            </button>
+                <button class="sidebar-button" data-filter="pending">
+                    <span>◷</span>
+                    Pendentes
+                </button>
 
-            <button class="sidebar-button" data-filter="favorite">
-                Favoritas
-            </button>
+                <button class="sidebar-button" data-filter="completed">
+                    <span>✓</span>
+                    Concluídas
+                </button>
 
-            <button class="sidebar-button">
-                Configurações
-            </button>
+                <button class="sidebar-button" data-filter="favorite">
+                    <span>★</span>
+                    Favoritas
+                </button>
 
-        </nav>
+            </nav>
+
+            <div class="sidebar-footer">
+
+                <button class="sidebar-button">
+                    <span>⚙</span>
+                    Configurações
+                </button>
+
+            </div>
+
+        </aside>
 
         <section class="content">
-            <h2>Minhas tarefas</h2>
+            <div class="page-header">
+                <div>
+                    <h2>Minhas tarefas</h2>
+                    <p>Organize suas atividades e acompanhe seu progresso.</p>
+                </div>
+            </div>
 
             <div class="task-form hidden">
 
-                <h3>Nova tarefa</h3>
+                <div class="form-header">
+                    <div>
+                        <h3>Nova tarefa</h3>
+                        <p>Adicione uma nova atividade à sua lista.</p>
+                    </div>
+                </div>
 
                 <form>
 

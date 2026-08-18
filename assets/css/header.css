@@ -46,3 +46,36 @@ header {
     gap: 12px;
 }
 
+.page-header {
+    margin-bottom: 28px;
+}
+
+.page-header h2 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.page-header p {
+    margin-top: 6px;
+    color: var(--color-text-secondary);
+    font-size: 14px;
+}
+
+
+/*FORM-HEADER*/
+
+.form-header {
+    margin-bottom: 20px;
+}
+
+.form-header h3 {
+    margin: 0;
+    font-size: 20px;
+}
+
+.form-header p {
+    margin: 4px 0 0;
+    color: var(--color-text-secondary);
+    font-size: 14px;
+}
