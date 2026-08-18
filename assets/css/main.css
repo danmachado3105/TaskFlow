@@ -54,7 +54,24 @@ button:hover {
 }
 
 .primary-button {
-    padding: 12px 24px;
+    padding: 12px 20px;
+
+    border: none;
+    border-radius: 8px;
+
+    background-color: var(--color-primary);
+    color: white;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.primary-button:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.1);
 }
 
 .secondary-button {
@@ -73,4 +90,12 @@ button:hover {
 
 .hidden {
     display: none;
+}
+
+.form-actions {
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 12px;
 }

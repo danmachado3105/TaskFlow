@@ -71,22 +71,35 @@
     min-height: 120px;
 }
 
-.form-actions {
-    display: flex;
-
-    justify-content: flex-end;
-
-    gap: 12px;
-}
-
 .task-card {
     display: flex;
     align-items: center;
     justify-content: space-between;
+
     padding: 24px;
+    margin-bottom: 16px;
+
+    background-color: var(--color-card);
+    border: 1px solid var(--color-border);
     border-radius: 12px;
+
+    transition: 0.2s ease;
 }
 
-.task-card.completed h3 {
+.task-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--color-primary);
+}
+
+.task-card.completed {
+    opacity: 0.6;
+}
+
+.task-card.completed h3,
+.task-card.completed p {
     text-decoration: line-through;
+}
+
+.task-card.completed .primary-button {
+    opacity: 0.5;
 }
