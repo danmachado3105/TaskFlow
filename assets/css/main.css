@@ -99,3 +99,16 @@ button:hover {
 
     gap: 12px;
 }
+
+.favorite-button {
+    border: none;
+    background: transparent;
+
+    font-size: 24px;
+
+    color: #888;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}

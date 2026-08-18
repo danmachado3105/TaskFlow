@@ -107,3 +107,13 @@
 .task-card.hidden {
     display: none;
 }
+
+.task-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.task-card.favorite .favorite-button {
+    color: #f5c542;
+}

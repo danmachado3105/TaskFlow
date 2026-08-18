@@ -28,7 +28,10 @@ taskForm.addEventListener("submit", function (event) {
             <p>${descriptionInput.value}</p>
         </div>
 
-        <button class="primary-button">Concluir</button>
+        <div class="task-actions">
+            <button class="favorite-button">☆</button>
+            <button class="primary-button">Concluir</button>
+        </div>
     `;
 
     taskList.appendChild(taskElement);
@@ -36,6 +39,20 @@ taskForm.addEventListener("submit", function (event) {
 
 
 taskList.addEventListener("click", function (event) {
+    const favoriteButton = event.target.closest(".favorite-button");
+
+    if (favoriteButton) {
+        const taskElement = favoriteButton.closest(".task-card");
+
+        taskElement.classList.toggle("favorite");
+
+        if (taskElement.classList.contains("favorite")) {
+            favoriteButton.textContent = "★";
+        } else {
+            favoriteButton.textContent = "☆";
+        }
+    }
+
     const completeButton = event.target.closest(".primary-button");
 
     if (!completeButton) {
@@ -78,6 +95,14 @@ filterButtons.forEach(function (button) {
 
             if (filter === "completed") {
                 if (task.classList.contains("completed")) {
+                    task.classList.remove("hidden");
+                } else {
+                    task.classList.add("hidden");
+                }
+            }
+
+            if (filter === "favorite") {
+                if (task.classList.contains("favorite")) {
                     task.classList.remove("hidden");
                 } else {
                     task.classList.add("hidden");
