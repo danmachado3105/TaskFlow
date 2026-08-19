@@ -138,3 +138,12 @@
     color: var(--color-text-secondary);
     font-size: 14px;
 }
+
+.task-card.completed .task-info h3 {
+    text-decoration: line-through;
+    opacity: 0.6;
+}
+
+.task-card.completed .task-info p {
+    opacity: 0.5;
+}

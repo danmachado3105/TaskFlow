@@ -35,6 +35,19 @@ taskForm.addEventListener("submit", function (event) {
     `;
 
     taskList.appendChild(taskElement);
+
+    const task = {
+        title: titleInput.value,
+        description: descriptionInput.value,
+        completed: false,
+        favorite: false
+    };
+
+    const taskJSON = JSON.stringify(task);
+
+    localStorage.setItem("task", taskJSON);
+
+    console.log(taskJSON);
 });
 
 
@@ -61,9 +74,13 @@ taskList.addEventListener("click", function (event) {
     if (completeButton) {
         const taskElement = completeButton.closest(".task-card");
 
-        taskElement.classList.add("completed");
+        taskElement.classList.toggle("completed");
 
-        console.log("Tarefa concluída!");
+        if (taskElement.classList.contains("completed")) {
+            completeButton.textContent = "✓ Concluída";
+        } else {
+            completeButton.textContent = "Concluir";
+        }
     }
 });
 
