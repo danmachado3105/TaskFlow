@@ -7,6 +7,10 @@ const descriptionInput = document.querySelector("#description");
 const taskList = document.querySelector(".task-list");
 const filterButtons = document.querySelectorAll(".sidebar-button");
 
+function saveTasks() {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+}
+
 newTaskButton.addEventListener("click", function () {
     taskFormContainer.classList.remove("hidden");
 });
@@ -15,17 +19,18 @@ cancelButton.addEventListener("click", function () {
     taskFormContainer.classList.add("hidden");
 });
 
-taskForm.addEventListener("submit", function (event) {
-    event.preventDefault();
+let tasks = [];
 
+function createTaskElement(task) {
     const taskElement = document.createElement("div");
 
     taskElement.classList.add("task-card");
+    taskElement.dataset.id = task.id;
 
     taskElement.innerHTML = `
         <div class="task-info">
-            <h3>${titleInput.value}</h3>
-            <p>${descriptionInput.value}</p>
+            <h3>${task.title}</h3>
+            <p>${task.description}</p>
         </div>
 
         <div class="task-actions">
@@ -34,22 +39,38 @@ taskForm.addEventListener("submit", function (event) {
         </div>
     `;
 
-    taskList.appendChild(taskElement);
+    if (task.favorite) {
+        taskElement.classList.add("favorite");
+        taskElement.querySelector(".favorite-button").textContent = "★";
+    }
+
+    if (task.completed) {
+        taskElement.classList.add("completed");
+        taskElement.querySelector(".primary-button").textContent = "✓ Concluída";
+    }
+
+    return taskElement;
+}
+
+taskForm.addEventListener("submit", function (event) {
+    event.preventDefault();
 
     const task = {
+        id: Date.now(),
         title: titleInput.value,
         description: descriptionInput.value,
         completed: false,
         favorite: false
     };
 
-    const taskJSON = JSON.stringify(task);
+    tasks.push(task);
 
-    localStorage.setItem("task", taskJSON);
+    saveTasks();;
 
-    console.log(taskJSON);
+    const taskElement = createTaskElement(task);
+
+    taskList.appendChild(taskElement);
 });
-
 
 taskList.addEventListener("click", function (event) {
 
@@ -58,13 +79,23 @@ taskList.addEventListener("click", function (event) {
     if (favoriteButton) {
         const taskElement = favoriteButton.closest(".task-card");
 
+        const taskId = Number(taskElement.dataset.id);
+
+        const task = tasks.find(function (task) {
+            return task.id === taskId;
+        });
+
         taskElement.classList.toggle("favorite");
+
+        task.favorite = taskElement.classList.contains("favorite");
 
         if (taskElement.classList.contains("favorite")) {
             favoriteButton.textContent = "★";
         } else {
             favoriteButton.textContent = "☆";
         }
+
+        saveTasks();
 
         return;
     }
@@ -74,13 +105,23 @@ taskList.addEventListener("click", function (event) {
     if (completeButton) {
         const taskElement = completeButton.closest(".task-card");
 
+        const taskId = Number(taskElement.dataset.id);
+
+        const task = tasks.find(function (task) {
+            return task.id === taskId;
+        });
+
         taskElement.classList.toggle("completed");
+
+        task.completed = taskElement.classList.contains("completed");
 
         if (taskElement.classList.contains("completed")) {
             completeButton.textContent = "✓ Concluída";
         } else {
             completeButton.textContent = "Concluir";
         }
+
+        saveTasks();
     }
 });
 
@@ -133,4 +174,18 @@ filterButtons.forEach(function (button) {
 
         filterTasks(filter);
     });
+});
+
+const savedTasks = localStorage.getItem("tasks");
+
+if (savedTasks) {
+    tasks = JSON.parse(savedTasks);
+
+    console.log(tasks);
+}
+
+tasks.forEach(function (task) {
+    const taskElement = createTaskElement(task);
+
+    taskList.appendChild(taskElement);
 });
