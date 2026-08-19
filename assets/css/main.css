@@ -104,11 +104,8 @@ button:hover {
     border: none;
     background: transparent;
 
-    font-size: 24px;
-
-    color: #888;
+    font-size: 22px;
+    color: var(--color-text-secondary);
 
     cursor: pointer;
-
-    transition: 0.2s ease;
 }

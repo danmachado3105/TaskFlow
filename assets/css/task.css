@@ -114,9 +114,13 @@
 }
 
 .task-card.favorite .favorite-button {
-    color: #f5c542;
+    color: #facc15;
 }
 
+.favorite-button:hover {
+    color: #facc15;
+    transform: scale(1.1);
+}
 
 /*TASK-INFO*/
 

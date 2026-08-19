@@ -29,8 +29,8 @@ taskForm.addEventListener("submit", function (event) {
         </div>
 
         <div class="task-actions">
-            <button class="favorite-button">☆</button>
-            <button class="primary-button">Concluir</button>
+            <button type="button" class="favorite-button">☆</button>
+            <button type="button" class="primary-button">Concluir</button>
         </div>
     `;
 
@@ -39,6 +39,7 @@ taskForm.addEventListener("submit", function (event) {
 
 
 taskList.addEventListener("click", function (event) {
+
     const favoriteButton = event.target.closest(".favorite-button");
 
     if (favoriteButton) {
@@ -51,19 +52,19 @@ taskList.addEventListener("click", function (event) {
         } else {
             favoriteButton.textContent = "☆";
         }
+
+        return;
     }
 
     const completeButton = event.target.closest(".primary-button");
 
-    if (!completeButton) {
-        return;
+    if (completeButton) {
+        const taskElement = completeButton.closest(".task-card");
+
+        taskElement.classList.add("completed");
+
+        console.log("Tarefa concluída!");
     }
-
-    const taskElement = completeButton.closest(".task-card");
-
-    taskElement.classList.add("completed");
-
-    console.log("Tarefa concluída!");
 });
 
 function filterTasks(filter) {
@@ -105,13 +106,13 @@ function filterTasks(filter) {
 filterButtons.forEach(function (button) {
     button.addEventListener("click", function () {
 
+        const filter = button.dataset.filter;
+
         filterButtons.forEach(function (button) {
             button.classList.remove("active");
         });
 
         button.classList.add("active");
-
-        const filter = button.dataset.filter;
 
         filterTasks(filter);
     });
