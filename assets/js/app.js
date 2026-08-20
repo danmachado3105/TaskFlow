@@ -75,6 +75,22 @@ taskForm.addEventListener("submit", function (event) {
 
 taskList.addEventListener("click", function (event) {
 
+    const editButton = event.target.closest(".edit-button");
+
+    if (editButton) {
+        const taskElement = editButton.closest(".task-card");
+
+        const taskId = Number(taskElement.dataset.id);
+
+        const task = tasks.find(function (task) {
+            return task.id === taskId;
+        });
+
+        console.log("Tarefa para editar:", task);
+
+        return;
+    }
+
     const favoriteButton = event.target.closest(".favorite-button");
 
     if (favoriteButton) {
