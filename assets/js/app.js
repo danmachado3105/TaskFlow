@@ -12,6 +12,10 @@ function saveTasks() {
 }
 
 newTaskButton.addEventListener("click", function () {
+    editingTaskId = null;
+
+    taskForm.reset();
+
     taskFormContainer.classList.remove("hidden");
 });
 
@@ -20,6 +24,8 @@ cancelButton.addEventListener("click", function () {
 });
 
 let tasks = [];
+
+let editingTaskId = null;
 
 function createTaskElement(task) {
     const taskElement = document.createElement("div");
@@ -37,6 +43,7 @@ function createTaskElement(task) {
             <button type="button" class="edit-button">Editar</button>
             <button type="button" class="favorite-button">☆</button>
             <button type="button" class="primary-button">Concluir</button>
+            <button type="button" class="delete-button">Excluir</button>
         </div>
     `;
 
@@ -56,24 +63,68 @@ function createTaskElement(task) {
 taskForm.addEventListener("submit", function (event) {
     event.preventDefault();
 
-    const task = {
-        id: Date.now(),
-        title: titleInput.value,
-        description: descriptionInput.value,
-        completed: false,
-        favorite: false
-    };
+    if (editingTaskId !== null) {
 
-    tasks.push(task);
+        const task = tasks.find(function (task) {
+            return task.id === editingTaskId;
+        });
 
-    saveTasks();;
+        task.title = titleInput.value;
+        task.description = descriptionInput.value;
 
-    const taskElement = createTaskElement(task);
+        saveTasks();
 
-    taskList.appendChild(taskElement);
+        const taskElement = taskList.querySelector(
+            `.task-card[data-id="${editingTaskId}"]`
+        );
+
+        taskElement.querySelector("h3").textContent = task.title;
+        taskElement.querySelector("p").textContent = task.description;
+
+        editingTaskId = null;
+
+    } else {
+
+        const task = {
+            id: Date.now(),
+            title: titleInput.value,
+            description: descriptionInput.value,
+            completed: false,
+            favorite: false
+        };
+
+        tasks.push(task);
+
+        saveTasks();
+
+        const taskElement = createTaskElement(task);
+
+        taskList.appendChild(taskElement);
+    }
+
+    taskForm.reset();
+    taskFormContainer.classList.add("hidden");
 });
 
 taskList.addEventListener("click", function (event) {
+
+    const deleteButton = event.target.closest(".delete-button");
+
+    if (deleteButton) {
+        const taskElement = deleteButton.closest(".task-card");
+
+        const taskId = Number(taskElement.dataset.id);
+
+        tasks = tasks.filter(function (task) {
+            return task.id !== taskId;
+        });
+
+        saveTasks();
+
+        taskElement.remove();
+
+        return;
+    }
 
     const editButton = event.target.closest(".edit-button");
 
@@ -86,7 +137,19 @@ taskList.addEventListener("click", function (event) {
             return task.id === taskId;
         });
 
-        console.log("Tarefa para editar:", task);
+        editingTaskId = task.id;
+
+        titleInput.value = task.title;
+        descriptionInput.value = task.description;
+
+        taskFormContainer.classList.remove("hidden");
+
+        taskFormContainer.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+
+        console.log("Editando:", task);
 
         return;
     }
