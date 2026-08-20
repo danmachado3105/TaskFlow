@@ -34,6 +34,7 @@ function createTaskElement(task) {
         </div>
 
         <div class="task-actions">
+            <button type="button" class="edit-button">Editar</button>
             <button type="button" class="favorite-button">☆</button>
             <button type="button" class="primary-button">Concluir</button>
         </div>
