@@ -6,6 +6,8 @@ O **TaskFlow** é uma aplicação web criada para praticar e consolidar conceito
 
 A aplicação permite criar, editar, concluir, excluir e favoritar tarefas, além de oferecer filtros, pesquisa, armazenamento local e acompanhamento do progresso.
 
+🔗 **Site no ar:** ( https://task-flow-six-topaz.vercel.app )
+
 ---
 
 ## 📚 Aprendizado
