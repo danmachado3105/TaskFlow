@@ -27,13 +27,14 @@
         <div class="header-actions">
 
             <div class="search-container">
-                <span>Pesquisar tarefas</span>
 
                 <input
-                    type="text"
+                    type="search"
                     id="search-input"
                     placeholder="Pesquisar tarefas..."
+                    autocomplete="off"
                 >
+
             </div>
 
             <button
@@ -41,7 +42,8 @@
                 id="new-task-button"
                 class="new-task-button"
             >
-                + Nova tarefa
+                <span>+</span>
+                Nova tarefa
             </button>
 
         </div>
@@ -49,7 +51,7 @@
     </header>
 
 
-    <!-- LAYOUT PRINCIPAL -->
+    <!-- LAYOUT -->
 
     <main class="layout">
 
@@ -57,49 +59,53 @@
 
         <aside class="sidebar">
 
-            <div class="sidebar-menu">
+            <nav class="sidebar-menu">
 
                 <button
+                    type="button"
                     class="sidebar-button active"
                     data-filter="all"
                 >
                     <span>▣</span>
-                    Todas as tarefas
+                    <span>Todas as tarefas</span>
                 </button>
 
                 <button
+                    type="button"
                     class="sidebar-button"
                     data-filter="pending"
                 >
                     <span>◷</span>
-                    Pendentes
+                    <span>Pendentes</span>
                 </button>
 
                 <button
+                    type="button"
                     class="sidebar-button"
                     data-filter="completed"
                 >
                     <span>✓</span>
-                    Concluídas
+                    <span>Concluídas</span>
                 </button>
 
                 <button
+                    type="button"
                     class="sidebar-button"
                     data-filter="favorite"
                 >
                     <span>★</span>
-                    Favoritas
+                    <span>Favoritas</span>
                 </button>
 
-            </div>
+            </nav>
 
 
             <button
                 type="button"
                 class="settings-button"
             >
-                ⚙
-                Configurações
+                <span>⚙</span>
+                <span>Configurações</span>
             </button>
 
         </aside>
@@ -109,26 +115,174 @@
 
         <section class="content">
 
+            <!-- TÍTULO -->
+
             <div class="content-header">
 
                 <div>
+
+                    <span class="section-label">
+                        VISÃO GERAL
+                    </span>
+
                     <h1>Minhas tarefas</h1>
 
                     <p>
                         Organize suas atividades e acompanhe seu progresso.
                     </p>
+
                 </div>
 
             </div>
 
 
+            <!-- DASHBOARD -->
+
+            <section class="dashboard">
+
+                <article class="stat-card">
+
+                    <div class="stat-icon">
+                        ▣
+                    </div>
+
+                    <div>
+
+                        <span class="stat-label">
+                            Total
+                        </span>
+
+                        <strong id="total-count">
+                            0
+                        </strong>
+
+                    </div>
+
+                </article>
+
+
+                <article class="stat-card">
+
+                    <div class="stat-icon pending-icon">
+                        ◷
+                    </div>
+
+                    <div>
+
+                        <span class="stat-label">
+                            Pendentes
+                        </span>
+
+                        <strong id="pending-count">
+                            0
+                        </strong>
+
+                    </div>
+
+                </article>
+
+
+                <article class="stat-card">
+
+                    <div class="stat-icon completed-icon">
+                        ✓
+                    </div>
+
+                    <div>
+
+                        <span class="stat-label">
+                            Concluídas
+                        </span>
+
+                        <strong id="completed-count">
+                            0
+                        </strong>
+
+                    </div>
+
+                </article>
+
+
+                <article class="stat-card">
+
+                    <div class="stat-icon favorite-icon">
+                        ★
+                    </div>
+
+                    <div>
+
+                        <span class="stat-label">
+                            Favoritas
+                        </span>
+
+                        <strong id="favorite-count">
+                            0
+                        </strong>
+
+                    </div>
+
+                </article>
+
+            </section>
+
+
+            <!-- PROGRESSO -->
+
+            <section class="progress-card">
+
+                <div class="progress-header">
+
+                    <div>
+
+                        <span class="stat-label">
+                            Progresso
+                        </span>
+
+                        <h2>
+                            Seu desempenho
+                        </h2>
+
+                    </div>
+
+                    <strong id="progress-percentage">
+                        0%
+                    </strong>
+
+                </div>
+
+
+                <div class="progress-bar">
+
+                    <div
+                        id="progress-fill"
+                        class="progress-fill"
+                    ></div>
+
+                </div>
+
+
+                <p id="progress-text">
+                    Nenhuma tarefa criada ainda.
+                </p>
+
+            </section>
+
+
             <!-- FORMULÁRIO -->
 
-            <div class="task-form hidden">
+            <section
+                class="task-form hidden"
+                id="task-form-container"
+            >
 
                 <div class="form-header">
 
                     <div>
+
+                        <span class="section-label">
+                            TAREFA
+                        </span>
+
                         <h2 id="form-title">
                             Nova tarefa
                         </h2>
@@ -136,12 +290,13 @@
                         <p>
                             Adicione uma nova atividade à sua lista.
                         </p>
+
                     </div>
 
                 </div>
 
 
-                <form>
+                <form id="task-form">
 
                     <div class="form-group">
 
@@ -153,6 +308,7 @@
                             type="text"
                             id="title"
                             placeholder="Ex: Estudar JavaScript"
+                            maxlength="100"
                             required
                         >
 
@@ -168,6 +324,7 @@
                         <textarea
                             id="description"
                             placeholder="Descreva sua tarefa..."
+                            maxlength="500"
                             required
                         ></textarea>
 
@@ -188,19 +345,41 @@
                             type="submit"
                             class="primary-button"
                         >
-                            Salvar
+                            Salvar tarefa
                         </button>
 
                     </div>
 
                 </form>
 
+            </section>
+
+
+            <!-- CABEÇALHO DA LISTA -->
+
+            <div class="tasks-header">
+
+                <div>
+
+                    <h2>
+                        Tarefas
+                    </h2>
+
+                    <span id="results-count">
+                        0 tarefas
+                    </span>
+
+                </div>
+
             </div>
 
 
-            <!-- LISTA DE TAREFAS -->
+            <!-- LISTA -->
 
-            <div class="task-list"></div>
+            <div
+                id="task-list"
+                class="task-list"
+            ></div>
 
 
             <!-- ESTADO VAZIO -->
@@ -209,14 +388,17 @@
                 id="empty-state"
                 class="empty-state hidden"
             >
+
                 <div class="empty-icon">
                     ✓
                 </div>
 
-                <h2>Nenhuma tarefa encontrada</h2>
+                <h2 id="empty-title">
+                    Nenhuma tarefa encontrada
+                </h2>
 
-                <p>
-                    Crie uma nova tarefa ou altere os filtros.
+                <p id="empty-description">
+                    Crie uma nova tarefa para começar.
                 </p>
 
             </div>
@@ -229,17 +411,23 @@
     <!-- MODAL DE EXCLUSÃO -->
 
     <div
-        class="modal hidden"
         id="delete-modal"
+        class="modal hidden"
     >
 
-        <div class="modal-content">
+        <div
+            class="modal-content"
+            role="dialog"
+            aria-modal="true"
+        >
 
             <div class="modal-icon">
                 !
             </div>
 
-            <h2>Excluir tarefa?</h2>
+            <h2>
+                Excluir tarefa?
+            </h2>
 
             <p>
                 Essa ação não pode ser desfeita.
@@ -275,6 +463,7 @@
     <div
         id="toast"
         class="toast hidden"
+        role="status"
     ></div>
 
 

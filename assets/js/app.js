@@ -1,32 +1,77 @@
-const newTaskButton = document.querySelector("#new-task-button");
+const newTaskButton =
+    document.querySelector("#new-task-button");
 
-const taskFormContainer = document.querySelector(".task-form");
+const taskFormContainer =
+    document.querySelector("#task-form-container");
 
-const taskForm = document.querySelector(".task-form form");
+const taskForm =
+    document.querySelector("#task-form");
 
-const cancelButton = document.querySelector("#cancel-button");
+const cancelButton =
+    document.querySelector("#cancel-button");
 
-const titleInput = document.querySelector("#title");
+const titleInput =
+    document.querySelector("#title");
 
-const descriptionInput = document.querySelector("#description");
+const descriptionInput =
+    document.querySelector("#description");
 
-const taskList = document.querySelector(".task-list");
+const taskList =
+    document.querySelector("#task-list");
 
-const filterButtons = document.querySelectorAll(".sidebar-button");
+const filterButtons =
+    document.querySelectorAll(".sidebar-button");
 
-const searchInput = document.querySelector("#search-input");
+const searchInput =
+    document.querySelector("#search-input");
 
-const formTitle = document.querySelector("#form-title");
+const formTitle =
+    document.querySelector("#form-title");
 
-const emptyState = document.querySelector("#empty-state");
+const emptyState =
+    document.querySelector("#empty-state");
 
-const deleteModal = document.querySelector("#delete-modal");
+const emptyTitle =
+    document.querySelector("#empty-title");
 
-const cancelDeleteButton = document.querySelector("#cancel-delete");
+const emptyDescription =
+    document.querySelector("#empty-description");
 
-const confirmDeleteButton = document.querySelector("#confirm-delete");
+const deleteModal =
+    document.querySelector("#delete-modal");
 
-const toast = document.querySelector("#toast");
+const cancelDeleteButton =
+    document.querySelector("#cancel-delete");
+
+const confirmDeleteButton =
+    document.querySelector("#confirm-delete");
+
+const toast =
+    document.querySelector("#toast");
+
+const totalCount =
+    document.querySelector("#total-count");
+
+const pendingCount =
+    document.querySelector("#pending-count");
+
+const completedCount =
+    document.querySelector("#completed-count");
+
+const favoriteCount =
+    document.querySelector("#favorite-count");
+
+const progressPercentage =
+    document.querySelector("#progress-percentage");
+
+const progressFill =
+    document.querySelector("#progress-fill");
+
+const progressText =
+    document.querySelector("#progress-text");
+
+const resultsCount =
+    document.querySelector("#results-count");
 
 
 let tasks = [];
@@ -39,10 +84,12 @@ let currentFilter = "all";
 
 let currentSearch = "";
 
+let toastTimeout;
 
-/* ================================
+
+/* =========================
    LOCAL STORAGE
-================================ */
+========================= */
 
 function saveTasks() {
 
@@ -54,45 +101,58 @@ function saveTasks() {
 }
 
 
-/* ================================
+/* =========================
    TOAST
-================================ */
+========================= */
 
 function showToast(message) {
+
+    clearTimeout(toastTimeout);
 
     toast.textContent = message;
 
     toast.classList.remove("hidden");
 
-    setTimeout(function () {
+    toastTimeout = setTimeout(
+        function () {
 
-        toast.classList.add("hidden");
+            toast.classList.add(
+                "hidden"
+            );
 
-    }, 2500);
+        },
+        2500
+    );
 
 }
 
 
-/* ================================
-   CRIAR ELEMENTO DA TAREFA
-================================ */
+/* =========================
+   CRIAR TASK ELEMENT
+========================= */
 
 function createTaskElement(task) {
 
-    const taskElement = document.createElement("article");
+    const taskElement =
+        document.createElement("article");
 
-    taskElement.classList.add("task-card");
 
-    taskElement.dataset.id = task.id;
+    taskElement.classList.add(
+        "task-card"
+    );
+
+
+    taskElement.dataset.id =
+        task.id;
 
 
     taskElement.innerHTML = `
 
         <div class="task-info">
 
-            <h3>${task.title}</h3>
+            <h3></h3>
 
-            <p>${task.description}</p>
+            <p></p>
 
         </div>
 
@@ -110,6 +170,7 @@ function createTaskElement(task) {
             <button
                 type="button"
                 class="favorite-button"
+                aria-label="Favoritar tarefa"
             >
                 ☆
             </button>
@@ -131,27 +192,54 @@ function createTaskElement(task) {
             </button>
 
         </div>
+
     `;
+
+
+    taskElement.querySelector(
+        "h3"
+    ).textContent =
+        task.title;
+
+
+    taskElement.querySelector(
+        "p"
+    ).textContent =
+        task.description;
+
+
+    const favoriteButton =
+        taskElement.querySelector(
+            ".favorite-button"
+        );
+
+
+    const completeButton =
+        taskElement.querySelector(
+            ".primary-button"
+        );
 
 
     if (task.favorite) {
 
-        taskElement.classList.add("favorite");
+        taskElement.classList.add(
+            "favorite"
+        );
 
-        taskElement.querySelector(
-            ".favorite-button"
-        ).textContent = "★";
+        favoriteButton.textContent =
+            "★";
 
     }
 
 
     if (task.completed) {
 
-        taskElement.classList.add("completed");
+        taskElement.classList.add(
+            "completed"
+        );
 
-        taskElement.querySelector(
-            ".primary-button"
-        ).textContent = "✓ Concluída";
+        completeButton.textContent =
+            "✓ Concluída";
 
     }
 
@@ -161,76 +249,240 @@ function createTaskElement(task) {
 }
 
 
-/* ================================
-   RENDERIZAR TAREFAS
-================================ */
+/* =========================
+   DASHBOARD
+========================= */
 
-function renderTasks() {
+function updateDashboard() {
 
-    taskList.innerHTML = "";
-
-
-    const search = currentSearch.toLowerCase();
+    const total =
+        tasks.length;
 
 
-    const filteredTasks = tasks.filter(function (task) {
+    const completed =
+        tasks.filter(
+            function (task) {
 
-        const matchesFilter =
-            currentFilter === "all" ||
+                return task.completed;
 
-            (
-                currentFilter === "pending" &&
-                !task.completed
-            ) ||
+            }
+        ).length;
 
-            (
-                currentFilter === "completed" &&
-                task.completed
-            ) ||
 
-            (
-                currentFilter === "favorite" &&
-                task.favorite
+    const pending =
+        total - completed;
+
+
+    const favorites =
+        tasks.filter(
+            function (task) {
+
+                return task.favorite;
+
+            }
+        ).length;
+
+
+    const progress =
+        total === 0
+            ? 0
+            : Math.round(
+                (completed / total) * 100
             );
 
 
-        const matchesSearch =
-            task.title.toLowerCase().includes(search) ||
-
-            task.description.toLowerCase().includes(search);
+    totalCount.textContent =
+        total;
 
 
-        return matchesFilter && matchesSearch;
-
-    });
-
-
-    filteredTasks.forEach(function (task) {
-
-        const taskElement =
-            createTaskElement(task);
-
-        taskList.appendChild(taskElement);
-
-    });
+    pendingCount.textContent =
+        pending;
 
 
-    if (filteredTasks.length === 0) {
+    completedCount.textContent =
+        completed;
 
-        emptyState.classList.remove("hidden");
+
+    favoriteCount.textContent =
+        favorites;
+
+
+    progressPercentage.textContent =
+        `${progress}%`;
+
+
+    progressFill.style.width =
+        `${progress}%`;
+
+
+    if (total === 0) {
+
+        progressText.textContent =
+            "Nenhuma tarefa criada ainda.";
+
+    } else if (progress === 100) {
+
+        progressText.textContent =
+            "Parabéns! Todas as tarefas foram concluídas.";
 
     } else {
 
-        emptyState.classList.add("hidden");
+        progressText.textContent =
+            `${completed} de ${total} tarefas concluídas.`;
 
     }
 
 }
 
 
-/* ================================
-   ABRIR FORMULÁRIO
-================================ */
+/* =========================
+   FILTRAR TAREFAS
+========================= */
+
+function getFilteredTasks() {
+
+    const search =
+        currentSearch.toLowerCase();
+
+
+    return tasks.filter(
+        function (task) {
+
+
+            const matchesFilter =
+                currentFilter === "all" ||
+
+                (
+                    currentFilter === "pending" &&
+                    !task.completed
+                ) ||
+
+                (
+                    currentFilter === "completed" &&
+                    task.completed
+                ) ||
+
+                (
+                    currentFilter === "favorite" &&
+                    task.favorite
+                );
+
+
+            const matchesSearch =
+                task.title
+                    .toLowerCase()
+                    .includes(search) ||
+
+                task.description
+                    .toLowerCase()
+                    .includes(search);
+
+
+            return (
+                matchesFilter &&
+                matchesSearch
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================
+   EMPTY STATE
+========================= */
+
+function updateEmptyState(
+    filteredTasks
+) {
+
+    if (filteredTasks.length > 0) {
+
+        emptyState.classList.add(
+            "hidden"
+        );
+
+        return;
+
+    }
+
+
+    emptyState.classList.remove(
+        "hidden"
+    );
+
+
+    if (
+        currentSearch ||
+        currentFilter !== "all"
+    ) {
+
+        emptyTitle.textContent =
+            "Nenhuma tarefa encontrada";
+
+        emptyDescription.textContent =
+            "Tente mudar a pesquisa ou o filtro.";
+
+    } else {
+
+        emptyTitle.textContent =
+            "Nenhuma tarefa ainda";
+
+        emptyDescription.textContent =
+            "Crie sua primeira tarefa para começar.";
+
+    }
+
+}
+
+
+/* =========================
+   RENDER
+========================= */
+
+function renderTasks() {
+
+    taskList.innerHTML = "";
+
+
+    const filteredTasks =
+        getFilteredTasks();
+
+
+    filteredTasks.forEach(
+        function (task) {
+
+            taskList.appendChild(
+                createTaskElement(task)
+            );
+
+        }
+    );
+
+
+    updateDashboard();
+
+    updateEmptyState(
+        filteredTasks
+    );
+
+
+    const count =
+        filteredTasks.length;
+
+
+    resultsCount.textContent =
+        count === 1
+            ? "1 tarefa"
+            : `${count} tarefas`;
+
+}
+
+
+/* =========================
+   ABRIR NOVA TAREFA
+========================= */
 
 newTaskButton.addEventListener(
     "click",
@@ -238,7 +490,8 @@ newTaskButton.addEventListener(
 
         editingTaskId = null;
 
-        formTitle.textContent = "Nova tarefa";
+        formTitle.textContent =
+            "Nova tarefa";
 
         taskForm.reset();
 
@@ -246,20 +499,29 @@ newTaskButton.addEventListener(
             "hidden"
         );
 
-        titleInput.focus();
 
         window.scrollTo({
             top: 0,
             behavior: "smooth"
         });
 
+
+        setTimeout(
+            function () {
+
+                titleInput.focus();
+
+            },
+            150
+        );
+
     }
 );
 
 
-/* ================================
+/* =========================
    CANCELAR FORMULÁRIO
-================================ */
+========================= */
 
 cancelButton.addEventListener(
     "click",
@@ -269,7 +531,8 @@ cancelButton.addEventListener(
 
         taskForm.reset();
 
-        formTitle.textContent = "Nova tarefa";
+        formTitle.textContent =
+            "Nova tarefa";
 
         taskFormContainer.classList.add(
             "hidden"
@@ -279,9 +542,9 @@ cancelButton.addEventListener(
 );
 
 
-/* ================================
-   SALVAR / EDITAR TAREFA
-================================ */
+/* =========================
+   SUBMIT
+========================= */
 
 taskForm.addEventListener(
     "submit",
@@ -293,11 +556,15 @@ taskForm.addEventListener(
         const title =
             titleInput.value.trim();
 
+
         const description =
             descriptionInput.value.trim();
 
 
-        if (!title || !description) {
+        if (
+            !title ||
+            !description
+        ) {
 
             return;
 
@@ -306,41 +573,60 @@ taskForm.addEventListener(
 
         /* EDITAR */
 
-        if (editingTaskId !== null) {
+        if (
+            editingTaskId !== null
+        ) {
 
-            const task = tasks.find(
-                function (task) {
+            const task =
+                tasks.find(
+                    function (task) {
 
-                    return task.id === editingTaskId;
+                        return (
+                            task.id ===
+                            editingTaskId
+                        );
 
-                }
-            );
+                    }
+                );
 
 
             if (task) {
 
-                task.title = title;
+                task.title =
+                    title;
 
-                task.description = description;
+                task.description =
+                    description;
 
             }
 
 
             saveTasks();
 
-            editingTaskId = null;
+
+            editingTaskId =
+                null;
+
 
             taskForm.reset();
+
+
+            formTitle.textContent =
+                "Nova tarefa";
+
 
             taskFormContainer.classList.add(
                 "hidden"
             );
 
+
             renderTasks();
+
 
             showToast(
                 "Tarefa atualizada com sucesso!"
             );
+
 
             return;
 
@@ -351,25 +637,32 @@ taskForm.addEventListener(
 
         const task = {
 
-            id: Date.now(),
+            id:
+                Date.now(),
 
-            title: title,
+            title:
+                title,
 
-            description: description,
+            description:
+                description,
 
-            completed: false,
+            completed:
+                false,
 
-            favorite: false
+            favorite:
+                false
 
         };
 
 
         tasks.push(task);
 
+
         saveTasks();
 
 
         taskForm.reset();
+
 
         taskFormContainer.classList.add(
             "hidden"
@@ -387,9 +680,9 @@ taskForm.addEventListener(
 );
 
 
-/* ================================
+/* =========================
    CLIQUES NAS TAREFAS
-================================ */
+========================= */
 
 taskList.addEventListener(
     "click",
@@ -399,26 +692,36 @@ taskList.addEventListener(
         /* EDITAR */
 
         const editButton =
-            event.target.closest(".edit-button");
+            event.target.closest(
+                ".edit-button"
+            );
 
 
         if (editButton) {
 
             const taskElement =
-                editButton.closest(".task-card");
+                editButton.closest(
+                    ".task-card"
+                );
 
 
             const taskId =
-                Number(taskElement.dataset.id);
+                Number(
+                    taskElement.dataset.id
+                );
 
 
-            const task = tasks.find(
-                function (task) {
+            const task =
+                tasks.find(
+                    function (task) {
 
-                    return task.id === taskId;
+                        return (
+                            task.id ===
+                            taskId
+                        );
 
-                }
-            );
+                    }
+                );
 
 
             if (!task) {
@@ -428,11 +731,13 @@ taskList.addEventListener(
             }
 
 
-            editingTaskId = task.id;
+            editingTaskId =
+                task.id;
 
 
             titleInput.value =
                 task.title;
+
 
             descriptionInput.value =
                 task.description;
@@ -448,15 +753,19 @@ taskList.addEventListener(
 
 
             window.scrollTo({
-
                 top: 0,
-
                 behavior: "smooth"
-
             });
 
 
-            titleInput.focus();
+            setTimeout(
+                function () {
+
+                    titleInput.focus();
+
+                },
+                150
+            );
 
 
             return;
@@ -464,7 +773,7 @@ taskList.addEventListener(
         }
 
 
-        /* FAVORITAR */
+        /* FAVORITO */
 
         const favoriteButton =
             event.target.closest(
@@ -481,16 +790,22 @@ taskList.addEventListener(
 
 
             const taskId =
-                Number(taskElement.dataset.id);
+                Number(
+                    taskElement.dataset.id
+                );
 
 
-            const task = tasks.find(
-                function (task) {
+            const task =
+                tasks.find(
+                    function (task) {
 
-                    return task.id === taskId;
+                        return (
+                            task.id ===
+                            taskId
+                        );
 
-                }
-            );
+                    }
+                );
 
 
             if (!task) {
@@ -506,13 +821,14 @@ taskList.addEventListener(
 
             saveTasks();
 
+
             renderTasks();
 
 
             showToast(
                 task.favorite
-                    ? "Tarefa adicionada aos favoritos!"
-                    : "Tarefa removida dos favoritos!"
+                    ? "Adicionada aos favoritos!"
+                    : "Removida dos favoritos!"
             );
 
 
@@ -538,16 +854,22 @@ taskList.addEventListener(
 
 
             const taskId =
-                Number(taskElement.dataset.id);
+                Number(
+                    taskElement.dataset.id
+                );
 
 
-            const task = tasks.find(
-                function (task) {
+            const task =
+                tasks.find(
+                    function (task) {
 
-                    return task.id === taskId;
+                        return (
+                            task.id ===
+                            taskId
+                        );
 
-                }
-            );
+                    }
+                );
 
 
             if (!task) {
@@ -563,13 +885,14 @@ taskList.addEventListener(
 
             saveTasks();
 
+
             renderTasks();
 
 
             showToast(
                 task.completed
                     ? "Tarefa concluída!"
-                    : "Tarefa marcada como pendente!"
+                    : "Tarefa voltou para pendentes!"
             );
 
 
@@ -595,7 +918,9 @@ taskList.addEventListener(
 
 
             deletingTaskId =
-                Number(taskElement.dataset.id);
+                Number(
+                    taskElement.dataset.id
+                );
 
 
             deleteModal.classList.remove(
@@ -611,34 +936,41 @@ taskList.addEventListener(
 );
 
 
-/* ================================
+/* =========================
    CONFIRMAR EXCLUSÃO
-================================ */
+========================= */
 
 confirmDeleteButton.addEventListener(
     "click",
     function () {
 
-        if (deletingTaskId === null) {
+        if (
+            deletingTaskId === null
+        ) {
 
             return;
 
         }
 
 
-        tasks = tasks.filter(
-            function (task) {
+        tasks =
+            tasks.filter(
+                function (task) {
 
-                return task.id !== deletingTaskId;
+                    return (
+                        task.id !==
+                        deletingTaskId
+                    );
 
-            }
-        );
+                }
+            );
 
 
         saveTasks();
 
 
-        deletingTaskId = null;
+        deletingTaskId =
+            null;
 
 
         deleteModal.classList.add(
@@ -657,15 +989,17 @@ confirmDeleteButton.addEventListener(
 );
 
 
-/* ================================
+/* =========================
    CANCELAR EXCLUSÃO
-================================ */
+========================= */
 
 cancelDeleteButton.addEventListener(
     "click",
     function () {
 
-        deletingTaskId = null;
+        deletingTaskId =
+            null;
+
 
         deleteModal.classList.add(
             "hidden"
@@ -675,9 +1009,65 @@ cancelDeleteButton.addEventListener(
 );
 
 
-/* ================================
+/* =========================
+   CLICAR FORA DO MODAL
+========================= */
+
+deleteModal.addEventListener(
+    "click",
+    function (event) {
+
+        if (
+            event.target ===
+            deleteModal
+        ) {
+
+            deletingTaskId =
+                null;
+
+
+            deleteModal.classList.add(
+                "hidden"
+            );
+
+        }
+
+    }
+);
+
+
+/* =========================
+   ESC FECHA MODAL
+========================= */
+
+document.addEventListener(
+    "keydown",
+    function (event) {
+
+        if (
+            event.key === "Escape" &&
+            !deleteModal.classList.contains(
+                "hidden"
+            )
+        ) {
+
+            deletingTaskId =
+                null;
+
+
+            deleteModal.classList.add(
+                "hidden"
+            );
+
+        }
+
+    }
+);
+
+
+/* =========================
    FILTROS
-================================ */
+========================= */
 
 filterButtons.forEach(
     function (button) {
@@ -715,9 +1105,9 @@ filterButtons.forEach(
 );
 
 
-/* ================================
+/* =========================
    PESQUISA
-================================ */
+========================= */
 
 searchInput.addEventListener(
     "input",
@@ -733,33 +1123,9 @@ searchInput.addEventListener(
 );
 
 
-/* ================================
-   FECHAR MODAL CLICANDO FORA
-================================ */
-
-deleteModal.addEventListener(
-    "click",
-    function (event) {
-
-        if (
-            event.target === deleteModal
-        ) {
-
-            deletingTaskId = null;
-
-            deleteModal.classList.add(
-                "hidden"
-            );
-
-        }
-
-    }
-);
-
-
-/* ================================
-   CARREGAR LOCAL STORAGE
-================================ */
+/* =========================
+   LOCAL STORAGE
+========================= */
 
 const savedTasks =
     localStorage.getItem("tasks");
@@ -769,7 +1135,18 @@ if (savedTasks) {
 
     try {
 
-        tasks = JSON.parse(savedTasks);
+        const parsedTasks =
+            JSON.parse(savedTasks);
+
+
+        if (
+            Array.isArray(parsedTasks)
+        ) {
+
+            tasks =
+                parsedTasks;
+
+        }
 
     } catch (error) {
 
@@ -785,8 +1162,8 @@ if (savedTasks) {
 }
 
 
-/* ================================
-   INICIALIZAR
-================================ */
+/* =========================
+   INICIALIZAÇÃO
+========================= */
 
 renderTasks();

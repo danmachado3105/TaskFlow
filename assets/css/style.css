@@ -1,9 +1,13 @@
-/* MODAL */
+/* =========================
+   MODAL
+========================= */
 
 .modal {
     position: fixed;
 
     inset: 0;
+
+    padding: 20px;
 
     display: flex;
 
@@ -11,9 +15,11 @@
 
     justify-content: center;
 
-    padding: 20px;
+    background:
+        rgba(2, 6, 23, 0.72);
 
-    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter:
+        blur(4px);
 
     z-index: 1000;
 
@@ -37,25 +43,36 @@
 }
 
 .modal-content {
-    width: min(400px, 100%);
+    width:
+        min(400px, 100%);
 
     padding: 28px;
 
-    background: var(--color-background-secondary);
+    background:
+        var(--color-background-secondary);
 
-    border: 1px solid var(--color-border);
+    border:
+        1px solid var(--color-border);
 
-    border-radius: 16px;
+    border-radius:
+        var(--radius-large);
 
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+    box-shadow:
+        0 25px 60px
+        rgba(0, 0, 0, 0.45);
 
-    transform: translateY(0) scale(1);
+    transform:
+        translateY(0)
+        scale(1);
 
-    transition: transform 0.2s ease;
+    transition:
+        transform 0.2s ease;
 }
 
 .modal.hidden .modal-content {
-    transform: translateY(10px) scale(0.96);
+    transform:
+        translateY(10px)
+        scale(0.96);
 }
 
 .modal-icon {
@@ -68,23 +85,31 @@
     align-items: center;
     justify-content: center;
 
-    background: rgba(220, 38, 38, 0.15);
+    background:
+        rgba(239, 68, 68, 0.12);
 
-    color: #ef4444;
+    color:
+        #f87171;
 
-    border-radius: 50%;
+    border-radius:
+        50%;
 
-    font-weight: 700;
+    font-weight: 800;
 }
 
 .modal-content h2 {
-    margin-bottom: 8px;
+    margin-bottom: 7px;
+
+    font-size: 20px;
 }
 
 .modal-content p {
     margin-bottom: 24px;
 
-    color: var(--color-text-secondary);
+    color:
+        var(--color-text-secondary);
+
+    font-size: 14px;
 }
 
 .modal-actions {
@@ -92,11 +117,13 @@
 
     justify-content: flex-end;
 
-    gap: 10px;
+    gap: 9px;
 }
 
 
-/* TOAST */
+/* =========================
+   TOAST
+========================= */
 
 .toast {
     position: fixed;
@@ -105,25 +132,34 @@
 
     bottom: 24px;
 
-    z-index: 2000;
+    max-width:
+        calc(100vw - 48px);
 
-    padding: 14px 20px;
+    padding:
+        13px 18px;
 
-    background: var(--color-success);
+    background:
+        var(--color-success);
 
     color: white;
 
-    border-radius: 10px;
+    border-radius:
+        var(--radius-small);
 
-    font-size: 14px;
+    font-size: 13px;
 
-    font-weight: 600;
+    font-weight: 650;
 
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    box-shadow:
+        0 12px 30px
+        rgba(0, 0, 0, 0.3);
+
+    z-index: 2000;
 
     opacity: 1;
 
-    transform: translateY(0);
+    transform:
+        translateY(0);
 
     transition:
         opacity 0.2s ease,
@@ -133,62 +169,49 @@
 .toast.hidden {
     opacity: 0;
 
-    transform: translateY(10px);
+    transform:
+        translateY(10px);
 
     pointer-events: none;
 }
 
 
-/* RESPONSIVO */
+/* =========================
+   RESPONSIVIDADE
+========================= */
 
-@media (max-width: 900px) {
+@media (max-width: 1000px) {
 
-    .header {
-        padding: 0 20px;
-    }
-
-    .search-container > span {
-        display: none;
+    .dashboard {
+        grid-template-columns:
+            repeat(2, 1fr);
     }
 
     .search-container input {
         width: 220px;
     }
 
-    .layout {
-        grid-template-columns: 210px 1fr;
-    }
-
-    .content {
-        width: calc(100% - 40px);
-    }
 }
 
 
-@media (max-width: 700px) {
+@media (max-width: 760px) {
 
     .header {
         height: auto;
 
-        padding: 16px;
+        padding: 15px;
 
         flex-direction: column;
 
         align-items: stretch;
 
-        gap: 15px;
+        gap: 14px;
     }
 
     .header-actions {
-        flex-direction: column;
+        display: grid;
 
-        align-items: stretch;
-
-        gap: 10px;
-    }
-
-    .search-container {
-        width: 100%;
+        grid-template-columns: 1fr auto;
     }
 
     .search-container input {
@@ -200,44 +223,147 @@
     }
 
     .sidebar {
+        min-height: auto;
+
         border-right: none;
 
-        border-bottom: 1px solid var(--color-border);
+        border-bottom:
+            1px solid var(--color-border);
+
+        padding: 10px;
     }
 
     .sidebar-menu {
         display: grid;
 
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns:
+            repeat(4, 1fr);
+
+        gap: 5px;
+    }
+
+    .sidebar-button {
+        justify-content: center;
+
+        padding: 11px 7px;
+
+        border-radius:
+            var(--radius-small);
+
+        font-size: 11px;
+    }
+
+    .sidebar-button.active {
+        border-right: none;
+    }
+
+    .sidebar-button span:last-child {
+        display: none;
     }
 
     .settings-button {
         display: none;
     }
 
-    .sidebar-button.active {
-        border-radius: 8px;
+    .content {
+        width:
+            calc(100% - 30px);
+
+        padding:
+            30px 0 60px;
     }
 
-    .content {
-        width: calc(100% - 28px);
+}
 
-        padding-top: 28px;
+
+@media (max-width: 560px) {
+
+    .logo {
+        font-size: 20px;
+    }
+
+    .header-actions {
+        grid-template-columns: 1fr;
+    }
+
+    .new-task-button {
+        justify-content: center;
+    }
+
+    .dashboard {
+        grid-template-columns:
+            1fr 1fr;
+    }
+
+    .stat-card {
+        padding: 15px;
+    }
+
+    .stat-icon {
+        width: 36px;
+        height: 36px;
+    }
+
+    .stat-card strong {
+        font-size: 20px;
+    }
+
+    .content-header h1 {
+        font-size: 27px;
     }
 
     .task-card {
-        align-items: flex-start;
+        align-items:
+            flex-start;
 
-        flex-direction: column;
+        flex-direction:
+            column;
     }
 
     .task-actions {
         width: 100%;
 
-        justify-content: flex-end;
+        justify-content:
+            flex-end;
+
+        flex-wrap:
+            wrap;
     }
 
     .form-actions {
+        flex-direction:
+            column-reverse;
+    }
+
+    .form-actions button {
         width: 100%;
     }
+
+    .toast {
+        right: 15px;
+
+        bottom: 15px;
+
+        left: 15px;
+
+        max-width: none;
+
+        text-align: center;
+    }
+
+}
+
+
+@media (max-width: 390px) {
+
+    .dashboard {
+        grid-template-columns:
+            1fr;
+    }
+
+    .sidebar-menu {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
 }
