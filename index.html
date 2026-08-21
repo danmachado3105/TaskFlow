@@ -151,6 +151,31 @@
             </div>
         </section>
     </main>
+
+    <div class="modal hidden" id="delete-modal">
+        <div class="modal-content">
+            <h2>Excluir tarefa?</h2>
+
+            <p>
+                Essa ação não pode ser desfeita.
+            </p>
+
+            <div class="modal-actions">
+                <button type="button" id="cancel-delete">
+                    Cancelar
+                </button>
+
+                <button type="button" id="confirm-delete">
+                    Excluir
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="toast hidden">
+        Tarefa excluída com sucesso!
+    </div>
+
     <script src="assets/js/app.js"></script>
 </body>
 </html>

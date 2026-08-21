@@ -6,6 +6,20 @@ const titleInput = document.querySelector("#title");
 const descriptionInput = document.querySelector("#description");
 const taskList = document.querySelector(".task-list");
 const filterButtons = document.querySelectorAll(".sidebar-button");
+const deleteModal = document.querySelector("#delete-modal");
+const cancelDeleteButton = document.querySelector("#cancel-delete");
+const confirmDeleteButton = document.querySelector("#confirm-delete");
+const toast = document.querySelector("#toast");
+
+function showToast(message) {
+    toast.textContent = message;
+
+    toast.classList.remove("hidden");
+
+    setTimeout(function () {
+        toast.classList.add("hidden");
+    }, 2500);
+}
 
 function saveTasks() {
     localStorage.setItem("tasks", JSON.stringify(tasks));
@@ -26,6 +40,8 @@ cancelButton.addEventListener("click", function () {
 let tasks = [];
 
 let editingTaskId = null;
+
+let deletingTaskId = null;
 
 function createTaskElement(task) {
     const taskElement = document.createElement("div");
@@ -115,13 +131,9 @@ taskList.addEventListener("click", function (event) {
 
         const taskId = Number(taskElement.dataset.id);
 
-        tasks = tasks.filter(function (task) {
-            return task.id !== taskId;
-        });
+        deletingTaskId = taskId;
 
-        saveTasks();
-
-        taskElement.remove();
+        deleteModal.classList.remove("hidden");
 
         return;
     }
@@ -203,6 +215,36 @@ taskList.addEventListener("click", function (event) {
 
         saveTasks();
     }
+});
+
+cancelDeleteButton.addEventListener("click", function () {
+    deletingTaskId = null;
+
+    deleteModal.classList.add("hidden");
+});
+
+confirmDeleteButton.addEventListener("click", function () {
+    if (deletingTaskId === null) {
+        return;
+    }
+
+    tasks = tasks.filter(function (task) {
+        return task.id !== deletingTaskId;
+    });
+
+    saveTasks();
+
+    const taskElement = taskList.querySelector(
+        `.task-card[data-id="${deletingTaskId}"]`
+    );
+
+    if (taskElement) {
+        taskElement.remove();
+    }
+
+    deletingTaskId = null;
+
+    deleteModal.classList.add("hidden");
 });
 
 function filterTasks(filter) {
