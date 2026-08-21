@@ -1,41 +1,33 @@
 const newTaskButton = document.querySelector("#new-task-button");
+
 const taskFormContainer = document.querySelector(".task-form");
+
 const taskForm = document.querySelector(".task-form form");
+
 const cancelButton = document.querySelector("#cancel-button");
+
 const titleInput = document.querySelector("#title");
+
 const descriptionInput = document.querySelector("#description");
+
 const taskList = document.querySelector(".task-list");
+
 const filterButtons = document.querySelectorAll(".sidebar-button");
+
+const searchInput = document.querySelector("#search-input");
+
+const formTitle = document.querySelector("#form-title");
+
+const emptyState = document.querySelector("#empty-state");
+
 const deleteModal = document.querySelector("#delete-modal");
+
 const cancelDeleteButton = document.querySelector("#cancel-delete");
+
 const confirmDeleteButton = document.querySelector("#confirm-delete");
+
 const toast = document.querySelector("#toast");
 
-function showToast(message) {
-    toast.textContent = message;
-
-    toast.classList.remove("hidden");
-
-    setTimeout(function () {
-        toast.classList.add("hidden");
-    }, 2500);
-}
-
-function saveTasks() {
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-}
-
-newTaskButton.addEventListener("click", function () {
-    editingTaskId = null;
-
-    taskForm.reset();
-
-    taskFormContainer.classList.remove("hidden");
-});
-
-cancelButton.addEventListener("click", function () {
-    taskFormContainer.classList.add("hidden");
-});
 
 let tasks = [];
 
@@ -43,271 +35,758 @@ let editingTaskId = null;
 
 let deletingTaskId = null;
 
+let currentFilter = "all";
+
+let currentSearch = "";
+
+
+/* ================================
+   LOCAL STORAGE
+================================ */
+
+function saveTasks() {
+
+    localStorage.setItem(
+        "tasks",
+        JSON.stringify(tasks)
+    );
+
+}
+
+
+/* ================================
+   TOAST
+================================ */
+
+function showToast(message) {
+
+    toast.textContent = message;
+
+    toast.classList.remove("hidden");
+
+    setTimeout(function () {
+
+        toast.classList.add("hidden");
+
+    }, 2500);
+
+}
+
+
+/* ================================
+   CRIAR ELEMENTO DA TAREFA
+================================ */
+
 function createTaskElement(task) {
-    const taskElement = document.createElement("div");
+
+    const taskElement = document.createElement("article");
 
     taskElement.classList.add("task-card");
+
     taskElement.dataset.id = task.id;
 
+
     taskElement.innerHTML = `
+
         <div class="task-info">
+
             <h3>${task.title}</h3>
+
             <p>${task.description}</p>
+
         </div>
 
+
         <div class="task-actions">
-            <button type="button" class="edit-button">Editar</button>
-            <button type="button" class="favorite-button">☆</button>
-            <button type="button" class="primary-button">Concluir</button>
-            <button type="button" class="delete-button">Excluir</button>
+
+            <button
+                type="button"
+                class="edit-button"
+            >
+                Editar
+            </button>
+
+
+            <button
+                type="button"
+                class="favorite-button"
+            >
+                ☆
+            </button>
+
+
+            <button
+                type="button"
+                class="primary-button"
+            >
+                Concluir
+            </button>
+
+
+            <button
+                type="button"
+                class="delete-button"
+            >
+                Excluir
+            </button>
+
         </div>
     `;
 
+
     if (task.favorite) {
+
         taskElement.classList.add("favorite");
-        taskElement.querySelector(".favorite-button").textContent = "★";
+
+        taskElement.querySelector(
+            ".favorite-button"
+        ).textContent = "★";
+
     }
+
 
     if (task.completed) {
+
         taskElement.classList.add("completed");
-        taskElement.querySelector(".primary-button").textContent = "✓ Concluída";
+
+        taskElement.querySelector(
+            ".primary-button"
+        ).textContent = "✓ Concluída";
+
     }
 
+
     return taskElement;
+
 }
 
-taskForm.addEventListener("submit", function (event) {
-    event.preventDefault();
 
-    if (editingTaskId !== null) {
+/* ================================
+   RENDERIZAR TAREFAS
+================================ */
 
-        const task = tasks.find(function (task) {
-            return task.id === editingTaskId;
-        });
+function renderTasks() {
 
-        task.title = titleInput.value;
-        task.description = descriptionInput.value;
+    taskList.innerHTML = "";
 
-        saveTasks();
 
-        const taskElement = taskList.querySelector(
-            `.task-card[data-id="${editingTaskId}"]`
-        );
+    const search = currentSearch.toLowerCase();
 
-        taskElement.querySelector("h3").textContent = task.title;
-        taskElement.querySelector("p").textContent = task.description;
 
-        editingTaskId = null;
+    const filteredTasks = tasks.filter(function (task) {
+
+        const matchesFilter =
+            currentFilter === "all" ||
+
+            (
+                currentFilter === "pending" &&
+                !task.completed
+            ) ||
+
+            (
+                currentFilter === "completed" &&
+                task.completed
+            ) ||
+
+            (
+                currentFilter === "favorite" &&
+                task.favorite
+            );
+
+
+        const matchesSearch =
+            task.title.toLowerCase().includes(search) ||
+
+            task.description.toLowerCase().includes(search);
+
+
+        return matchesFilter && matchesSearch;
+
+    });
+
+
+    filteredTasks.forEach(function (task) {
+
+        const taskElement =
+            createTaskElement(task);
+
+        taskList.appendChild(taskElement);
+
+    });
+
+
+    if (filteredTasks.length === 0) {
+
+        emptyState.classList.remove("hidden");
 
     } else {
 
+        emptyState.classList.add("hidden");
+
+    }
+
+}
+
+
+/* ================================
+   ABRIR FORMULÁRIO
+================================ */
+
+newTaskButton.addEventListener(
+    "click",
+    function () {
+
+        editingTaskId = null;
+
+        formTitle.textContent = "Nova tarefa";
+
+        taskForm.reset();
+
+        taskFormContainer.classList.remove(
+            "hidden"
+        );
+
+        titleInput.focus();
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+
+    }
+);
+
+
+/* ================================
+   CANCELAR FORMULÁRIO
+================================ */
+
+cancelButton.addEventListener(
+    "click",
+    function () {
+
+        editingTaskId = null;
+
+        taskForm.reset();
+
+        formTitle.textContent = "Nova tarefa";
+
+        taskFormContainer.classList.add(
+            "hidden"
+        );
+
+    }
+);
+
+
+/* ================================
+   SALVAR / EDITAR TAREFA
+================================ */
+
+taskForm.addEventListener(
+    "submit",
+    function (event) {
+
+        event.preventDefault();
+
+
+        const title =
+            titleInput.value.trim();
+
+        const description =
+            descriptionInput.value.trim();
+
+
+        if (!title || !description) {
+
+            return;
+
+        }
+
+
+        /* EDITAR */
+
+        if (editingTaskId !== null) {
+
+            const task = tasks.find(
+                function (task) {
+
+                    return task.id === editingTaskId;
+
+                }
+            );
+
+
+            if (task) {
+
+                task.title = title;
+
+                task.description = description;
+
+            }
+
+
+            saveTasks();
+
+            editingTaskId = null;
+
+            taskForm.reset();
+
+            taskFormContainer.classList.add(
+                "hidden"
+            );
+
+            renderTasks();
+
+            showToast(
+                "Tarefa atualizada com sucesso!"
+            );
+
+            return;
+
+        }
+
+
+        /* CRIAR */
+
         const task = {
+
             id: Date.now(),
-            title: titleInput.value,
-            description: descriptionInput.value,
+
+            title: title,
+
+            description: description,
+
             completed: false,
+
             favorite: false
+
         };
+
 
         tasks.push(task);
 
         saveTasks();
 
-        const taskElement = createTaskElement(task);
 
-        taskList.appendChild(taskElement);
+        taskForm.reset();
+
+        taskFormContainer.classList.add(
+            "hidden"
+        );
+
+
+        renderTasks();
+
+
+        showToast(
+            "Tarefa criada com sucesso!"
+        );
+
     }
+);
 
-    taskForm.reset();
-    taskFormContainer.classList.add("hidden");
-});
 
-taskList.addEventListener("click", function (event) {
+/* ================================
+   CLIQUES NAS TAREFAS
+================================ */
 
-    const deleteButton = event.target.closest(".delete-button");
+taskList.addEventListener(
+    "click",
+    function (event) {
 
-    if (deleteButton) {
-        const taskElement = deleteButton.closest(".task-card");
 
-        const taskId = Number(taskElement.dataset.id);
+        /* EDITAR */
 
-        deletingTaskId = taskId;
+        const editButton =
+            event.target.closest(".edit-button");
 
-        deleteModal.classList.remove("hidden");
 
-        return;
-    }
+        if (editButton) {
 
-    const editButton = event.target.closest(".edit-button");
+            const taskElement =
+                editButton.closest(".task-card");
 
-    if (editButton) {
-        const taskElement = editButton.closest(".task-card");
 
-        const taskId = Number(taskElement.dataset.id);
+            const taskId =
+                Number(taskElement.dataset.id);
 
-        const task = tasks.find(function (task) {
-            return task.id === taskId;
-        });
 
-        editingTaskId = task.id;
+            const task = tasks.find(
+                function (task) {
 
-        titleInput.value = task.title;
-        descriptionInput.value = task.description;
+                    return task.id === taskId;
 
-        taskFormContainer.classList.remove("hidden");
+                }
+            );
 
-        taskFormContainer.scrollIntoView({
-            behavior: "smooth",
-            block: "start"
-        });
 
-        console.log("Editando:", task);
+            if (!task) {
 
-        return;
-    }
+                return;
 
-    const favoriteButton = event.target.closest(".favorite-button");
+            }
 
-    if (favoriteButton) {
-        const taskElement = favoriteButton.closest(".task-card");
 
-        const taskId = Number(taskElement.dataset.id);
+            editingTaskId = task.id;
 
-        const task = tasks.find(function (task) {
-            return task.id === taskId;
-        });
 
-        taskElement.classList.toggle("favorite");
+            titleInput.value =
+                task.title;
 
-        task.favorite = taskElement.classList.contains("favorite");
+            descriptionInput.value =
+                task.description;
 
-        if (taskElement.classList.contains("favorite")) {
-            favoriteButton.textContent = "★";
-        } else {
-            favoriteButton.textContent = "☆";
+
+            formTitle.textContent =
+                "Editar tarefa";
+
+
+            taskFormContainer.classList.remove(
+                "hidden"
+            );
+
+
+            window.scrollTo({
+
+                top: 0,
+
+                behavior: "smooth"
+
+            });
+
+
+            titleInput.focus();
+
+
+            return;
+
         }
+
+
+        /* FAVORITAR */
+
+        const favoriteButton =
+            event.target.closest(
+                ".favorite-button"
+            );
+
+
+        if (favoriteButton) {
+
+            const taskElement =
+                favoriteButton.closest(
+                    ".task-card"
+                );
+
+
+            const taskId =
+                Number(taskElement.dataset.id);
+
+
+            const task = tasks.find(
+                function (task) {
+
+                    return task.id === taskId;
+
+                }
+            );
+
+
+            if (!task) {
+
+                return;
+
+            }
+
+
+            task.favorite =
+                !task.favorite;
+
+
+            saveTasks();
+
+            renderTasks();
+
+
+            showToast(
+                task.favorite
+                    ? "Tarefa adicionada aos favoritos!"
+                    : "Tarefa removida dos favoritos!"
+            );
+
+
+            return;
+
+        }
+
+
+        /* CONCLUIR */
+
+        const completeButton =
+            event.target.closest(
+                ".primary-button"
+            );
+
+
+        if (completeButton) {
+
+            const taskElement =
+                completeButton.closest(
+                    ".task-card"
+                );
+
+
+            const taskId =
+                Number(taskElement.dataset.id);
+
+
+            const task = tasks.find(
+                function (task) {
+
+                    return task.id === taskId;
+
+                }
+            );
+
+
+            if (!task) {
+
+                return;
+
+            }
+
+
+            task.completed =
+                !task.completed;
+
+
+            saveTasks();
+
+            renderTasks();
+
+
+            showToast(
+                task.completed
+                    ? "Tarefa concluída!"
+                    : "Tarefa marcada como pendente!"
+            );
+
+
+            return;
+
+        }
+
+
+        /* EXCLUIR */
+
+        const deleteButton =
+            event.target.closest(
+                ".delete-button"
+            );
+
+
+        if (deleteButton) {
+
+            const taskElement =
+                deleteButton.closest(
+                    ".task-card"
+                );
+
+
+            deletingTaskId =
+                Number(taskElement.dataset.id);
+
+
+            deleteModal.classList.remove(
+                "hidden"
+            );
+
+
+            return;
+
+        }
+
+    }
+);
+
+
+/* ================================
+   CONFIRMAR EXCLUSÃO
+================================ */
+
+confirmDeleteButton.addEventListener(
+    "click",
+    function () {
+
+        if (deletingTaskId === null) {
+
+            return;
+
+        }
+
+
+        tasks = tasks.filter(
+            function (task) {
+
+                return task.id !== deletingTaskId;
+
+            }
+        );
+
 
         saveTasks();
 
-        return;
+
+        deletingTaskId = null;
+
+
+        deleteModal.classList.add(
+            "hidden"
+        );
+
+
+        renderTasks();
+
+
+        showToast(
+            "Tarefa excluída com sucesso!"
+        );
+
     }
+);
 
-    const completeButton = event.target.closest(".primary-button");
 
-    if (completeButton) {
-        const taskElement = completeButton.closest(".task-card");
+/* ================================
+   CANCELAR EXCLUSÃO
+================================ */
 
-        const taskId = Number(taskElement.dataset.id);
+cancelDeleteButton.addEventListener(
+    "click",
+    function () {
 
-        const task = tasks.find(function (task) {
-            return task.id === taskId;
-        });
+        deletingTaskId = null;
 
-        taskElement.classList.toggle("completed");
+        deleteModal.classList.add(
+            "hidden"
+        );
 
-        task.completed = taskElement.classList.contains("completed");
-
-        if (taskElement.classList.contains("completed")) {
-            completeButton.textContent = "✓ Concluída";
-        } else {
-            completeButton.textContent = "Concluir";
-        }
-
-        saveTasks();
     }
-});
+);
 
-cancelDeleteButton.addEventListener("click", function () {
-    deletingTaskId = null;
 
-    deleteModal.classList.add("hidden");
-});
+/* ================================
+   FILTROS
+================================ */
 
-confirmDeleteButton.addEventListener("click", function () {
-    if (deletingTaskId === null) {
-        return;
-    }
+filterButtons.forEach(
+    function (button) {
 
-    tasks = tasks.filter(function (task) {
-        return task.id !== deletingTaskId;
-    });
+        button.addEventListener(
+            "click",
+            function () {
 
-    saveTasks();
+                currentFilter =
+                    button.dataset.filter;
 
-    const taskElement = taskList.querySelector(
-        `.task-card[data-id="${deletingTaskId}"]`
-    );
 
-    if (taskElement) {
-        taskElement.remove();
-    }
+                filterButtons.forEach(
+                    function (button) {
 
-    deletingTaskId = null;
+                        button.classList.remove(
+                            "active"
+                        );
 
-    deleteModal.classList.add("hidden");
-});
+                    }
+                );
 
-function filterTasks(filter) {
-    const tasks = taskList.querySelectorAll(".task-card");
 
-    tasks.forEach(function (task) {
+                button.classList.add(
+                    "active"
+                );
 
-        if (filter === "all") {
-            task.classList.remove("hidden");
-        }
 
-        if (filter === "pending") {
-            if (task.classList.contains("completed")) {
-                task.classList.add("hidden");
-            } else {
-                task.classList.remove("hidden");
+                renderTasks();
+
             }
+        );
+
+    }
+);
+
+
+/* ================================
+   PESQUISA
+================================ */
+
+searchInput.addEventListener(
+    "input",
+    function () {
+
+        currentSearch =
+            searchInput.value.trim();
+
+
+        renderTasks();
+
+    }
+);
+
+
+/* ================================
+   FECHAR MODAL CLICANDO FORA
+================================ */
+
+deleteModal.addEventListener(
+    "click",
+    function (event) {
+
+        if (
+            event.target === deleteModal
+        ) {
+
+            deletingTaskId = null;
+
+            deleteModal.classList.add(
+                "hidden"
+            );
+
         }
 
-        if (filter === "completed") {
-            if (task.classList.contains("completed")) {
-                task.classList.remove("hidden");
-            } else {
-                task.classList.add("hidden");
-            }
-        }
+    }
+);
 
-        if (filter === "favorite") {
-            if (task.classList.contains("favorite")) {
-                task.classList.remove("hidden");
-            } else {
-                task.classList.add("hidden");
-            }
-        }
 
-    });
-}
+/* ================================
+   CARREGAR LOCAL STORAGE
+================================ */
 
-filterButtons.forEach(function (button) {
-    button.addEventListener("click", function () {
+const savedTasks =
+    localStorage.getItem("tasks");
 
-        const filter = button.dataset.filter;
-
-        filterButtons.forEach(function (button) {
-            button.classList.remove("active");
-        });
-
-        button.classList.add("active");
-
-        filterTasks(filter);
-    });
-});
-
-const savedTasks = localStorage.getItem("tasks");
 
 if (savedTasks) {
-    tasks = JSON.parse(savedTasks);
 
-    console.log(tasks);
+    try {
+
+        tasks = JSON.parse(savedTasks);
+
+    } catch (error) {
+
+        console.error(
+            "Erro ao carregar tarefas:",
+            error
+        );
+
+        tasks = [];
+
+    }
+
 }
 
-tasks.forEach(function (task) {
-    const taskElement = createTaskElement(task);
 
-    taskList.appendChild(taskElement);
-});
+/* ================================
+   INICIALIZAR
+================================ */
+
+renderTasks();

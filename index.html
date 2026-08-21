@@ -1,116 +1,193 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="assets/css/style.css">
     <title>TaskFlow</title>
-</head>
-<body>
-    <header>
-        <div class="brand">
-            <img src="#" alt="Logo do TaskFlow">
 
-            <h1>TaskFlow</h1>
+    <link rel="stylesheet" href="assets/css/reset.css">
+    <link rel="stylesheet" href="assets/css/variables.css">
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body>
+
+    <!-- HEADER -->
+
+    <header class="header">
+
+        <div class="logo">
+            <span class="logo-icon">✓</span>
+            <span>TaskFlow</span>
         </div>
+
         <div class="header-actions">
-            <form action="#">
-                <label for="search">Pesquisar tarefas</label>
-                <input id="search" type="text" placeholder="Pesquisar tarefas...">
-            </form>
-            
-            <button id="new-task-button" class="primary-button">
-                Nova tarefa
+
+            <div class="search-container">
+                <span>Pesquisar tarefas</span>
+
+                <input
+                    type="text"
+                    id="search-input"
+                    placeholder="Pesquisar tarefas..."
+                >
+            </div>
+
+            <button
+                type="button"
+                id="new-task-button"
+                class="new-task-button"
+            >
+                + Nova tarefa
             </button>
 
-            <img src="#" alt="Avatar">
         </div>
-        
+
     </header>
+
+
+    <!-- LAYOUT PRINCIPAL -->
 
     <main class="layout">
 
+        <!-- SIDEBAR -->
+
         <aside class="sidebar">
 
-            <nav class="sidebar-navigation">
+            <div class="sidebar-menu">
 
-                <button class="sidebar-button active" data-filter="all">
+                <button
+                    class="sidebar-button active"
+                    data-filter="all"
+                >
                     <span>▣</span>
                     Todas as tarefas
                 </button>
 
-                <button class="sidebar-button" data-filter="pending">
+                <button
+                    class="sidebar-button"
+                    data-filter="pending"
+                >
                     <span>◷</span>
                     Pendentes
                 </button>
 
-                <button class="sidebar-button" data-filter="completed">
+                <button
+                    class="sidebar-button"
+                    data-filter="completed"
+                >
                     <span>✓</span>
                     Concluídas
                 </button>
 
-                <button class="sidebar-button" data-filter="favorite">
+                <button
+                    class="sidebar-button"
+                    data-filter="favorite"
+                >
                     <span>★</span>
                     Favoritas
                 </button>
 
-            </nav>
-
-            <div class="sidebar-footer">
-
-                <button class="sidebar-button">
-                    <span>⚙</span>
-                    Configurações
-                </button>
-
             </div>
+
+
+            <button
+                type="button"
+                class="settings-button"
+            >
+                ⚙
+                Configurações
+            </button>
 
         </aside>
 
+
+        <!-- CONTEÚDO -->
+
         <section class="content">
-            <div class="page-header">
+
+            <div class="content-header">
+
                 <div>
-                    <h2>Minhas tarefas</h2>
-                    <p>Organize suas atividades e acompanhe seu progresso.</p>
+                    <h1>Minhas tarefas</h1>
+
+                    <p>
+                        Organize suas atividades e acompanhe seu progresso.
+                    </p>
                 </div>
+
             </div>
+
+
+            <!-- FORMULÁRIO -->
 
             <div class="task-form hidden">
 
                 <div class="form-header">
+
                     <div>
-                        <h3>Nova tarefa</h3>
-                        <p>Adicione uma nova atividade à sua lista.</p>
+                        <h2 id="form-title">
+                            Nova tarefa
+                        </h2>
+
+                        <p>
+                            Adicione uma nova atividade à sua lista.
+                        </p>
                     </div>
+
                 </div>
+
 
                 <form>
 
-                    <label for="title">Título</label>
-                    <input
-                        type="text"
-                        id="title"
-                        placeholder="Ex: Estudar JavaScript"
-                    >
+                    <div class="form-group">
 
-                    <label for="description">Descrição</label>
-                    <textarea
-                        id="description"
-                        placeholder="Descreva sua tarefa..."
-                    ></textarea>
+                        <label for="title">
+                            Título
+                        </label>
+
+                        <input
+                            type="text"
+                            id="title"
+                            placeholder="Ex: Estudar JavaScript"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="description">
+                            Descrição
+                        </label>
+
+                        <textarea
+                            id="description"
+                            placeholder="Descreva sua tarefa..."
+                            required
+                        ></textarea>
+
+                    </div>
+
 
                     <div class="form-actions">
 
-                        <button type="button" class="secondary-button" id="cancel-button">
+                        <button
+                            type="button"
+                            id="cancel-button"
+                            class="secondary-button"
+                        >
                             Cancelar
                         </button>
 
-                        <button type="submit" class="primary-button">
+                        <button
+                            type="submit"
+                            class="primary-button"
+                        >
                             Salvar
                         </button>
 
@@ -120,40 +197,48 @@
 
             </div>
 
-            <div class="task-list">
 
-                <article class="task-card">
+            <!-- LISTA DE TAREFAS -->
 
-                    <div class="task-info">
-                        <h3>Aprender JavaScript</h3>
-                        <p>Estudar DOM, Eventos e LocalStorage.</p>
-                    </div>
+            <div class="task-list"></div>
 
-                    <button class="task-button">
-                        Concluir
-                    </button>
 
-                </article>
+            <!-- ESTADO VAZIO -->
 
-                <article class="task-card">
+            <div
+                id="empty-state"
+                class="empty-state hidden"
+            >
+                <div class="empty-icon">
+                    ✓
+                </div>
 
-                    <div class="task-info">
-                        <h3>Criar Portfólio</h3>
-                        <p>Finalizar o projeto TaskFlow.</p>
-                    </div>
+                <h2>Nenhuma tarefa encontrada</h2>
 
-                    <button class="task-button">
-                        Concluir
-                    </button>
-
-                </article>
+                <p>
+                    Crie uma nova tarefa ou altere os filtros.
+                </p>
 
             </div>
+
         </section>
+
     </main>
 
-    <div class="modal hidden" id="delete-modal">
+
+    <!-- MODAL DE EXCLUSÃO -->
+
+    <div
+        class="modal hidden"
+        id="delete-modal"
+    >
+
         <div class="modal-content">
+
+            <div class="modal-icon">
+                !
+            </div>
+
             <h2>Excluir tarefa?</h2>
 
             <p>
@@ -161,21 +246,40 @@
             </p>
 
             <div class="modal-actions">
-                <button type="button" id="cancel-delete">
+
+                <button
+                    type="button"
+                    id="cancel-delete"
+                    class="secondary-button"
+                >
                     Cancelar
                 </button>
 
-                <button type="button" id="confirm-delete">
+                <button
+                    type="button"
+                    id="confirm-delete"
+                    class="delete-button"
+                >
                     Excluir
                 </button>
+
             </div>
+
         </div>
+
     </div>
 
-    <div id="toast" class="toast hidden">
-        Tarefa excluída com sucesso!
-    </div>
+
+    <!-- TOAST -->
+
+    <div
+        id="toast"
+        class="toast hidden"
+    ></div>
+
 
     <script src="assets/js/app.js"></script>
+
 </body>
+
 </html>
