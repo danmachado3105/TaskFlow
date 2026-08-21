@@ -6,6 +6,26 @@ O **TaskFlow** é uma aplicação web criada para praticar e consolidar conceito
 
 A aplicação permite criar, editar, concluir, excluir e favoritar tarefas, além de oferecer filtros, pesquisa, armazenamento local e acompanhamento do progresso.
 
+🔗 **Site no ar:** ( https://task-flow-six-topaz.vercel.app )
+
+---
+
+## 📚 Aprendizado
+
+Este projeto foi desenvolvido como parte do meu processo de aprendizado em JavaScript.
+
+Durante o desenvolvimento, utilizei o **ChatGPT como ferramenta de apoio**, buscando explicações, exemplos, auxílio na identificação de erros e orientação durante a construção das funcionalidades.
+
+O objetivo foi entender e praticar os conceitos, implementando e testando cada etapa do projeto.
+
+---
+
+## 🖥️ Preview
+
+![TaskFlow Preview](assets/images/taskflow-preview.png)
+
+> Screenshot da aplicação.
+
 ---
 
 ## ✨ Funcionalidades
@@ -25,14 +45,6 @@ A aplicação permite criar, editar, concluir, excluir e favoritar tarefas, alé
 - [x] Estado vazio para listas sem tarefas
 - [x] Interface responsiva
 - [x] Animações e microinterações
-
----
-
-## 🖥️ Preview
-
-![TaskFlow Preview](assets/images/taskflow-preview.png)
-
-> Screenshot da aplicação.
 
 ---
 
